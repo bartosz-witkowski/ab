@@ -6,6 +6,8 @@ object AbBuild extends Build {
 
   val deps = List(
     "org.scalaz" %% "scalaz-core" % scalazVersion,
+    "org.specs2" %% "specs2" % "2.4.15" % "test",
+    "org.scalacheck" %% "scalacheck" % "1.12.2" % "test"
   )
 
   // from http://tpolecat.github.io/2014/04/11/scalac-flags.html
