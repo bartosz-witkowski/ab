@@ -28,6 +28,23 @@ class Groups private (buckets: Vector[Groups.Bucket]) {
     binSearch(math.abs(l % sum))
   }
 
+  def probabilites: Map[Group, Double] = {
+    val sizes: Seq[Long] = for (i <- 0 until buckets.size) yield {
+      if (i == 0) {
+        buckets(0).cumulative
+      } else {
+        buckets(i).cumulative - buckets(i - 1).cumulative
+      }
+    }
+
+    val names = buckets.map(_.group)
+
+    names.zip(sizes).map { case (group, size) =>
+      val p = size.toDouble / sum
+      (group, p)
+    }.toMap
+  }
+
   override def toString = s"""Groups(${buckets.mkString(", ")})"""
 
   private[this] def binSearch(l: Long): Group = {
