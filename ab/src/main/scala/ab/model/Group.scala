@@ -1,6 +1,6 @@
 package ab.model
 
-import scalaz._
+import scalaz._, Scalaz._
 
 case class Group(name: String)
 
@@ -98,9 +98,18 @@ object Groups {
 
   import scalaz.concurrent.Task
 
-  def fromResource(resourceName: String): Task[ValidationNel[Parsing.Error, Groups]] = Task {
-    val is = getClass.getResourceAsStream(resourceName)
-    val string = scala.io.Source.fromInputStream(is).mkString
-    Parsing.parseGroups(string)
+  sealed abstract class AquisitionError
+  case object CannotAquireGroupDescriptionFile extends AquisitionError
+  case class ParsingError(error: Parsing.Error) extends AquisitionError
+
+  def fromResource(resourceName: String): Task[ValidationNel[AquisitionError, Groups]] = Task {
+    \/.fromTryCatchNonFatal {
+      val is = getClass.getResourceAsStream(resourceName)
+      scala.io.Source.fromInputStream(is).mkString
+    }.fold({ error =>
+      CannotAquireGroupDescriptionFile.failureNel
+    }, { string =>
+      Parsing.parseGroups(string).leftMap { _.map(ParsingError(_)) }
+    })
   }
 }

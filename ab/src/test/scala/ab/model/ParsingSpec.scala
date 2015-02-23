@@ -1,7 +1,7 @@
 package ab.model
 
 import ab.Spec
-import scalaz._, Scalaz._
+import scalaz._
 import atto._, Atto._
 
 class ParsingSpec extends Spec {

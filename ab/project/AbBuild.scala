@@ -5,7 +5,8 @@ object AbBuild extends Build {
   val scalazVersion = "7.1.0"
 
   val customResolvers = List(
-    "tpolecat"  at "http://dl.bintray.com/tpolecat/maven")
+    "tpolecat"  at "http://dl.bintray.com/tpolecat/maven",
+    "Scalaz Bintray Repo" at "http://dl.bintray.com/scalaz/releases")
 
   val deps = List(
     "org.scalaz" %% "scalaz-core" % scalazVersion,
@@ -13,6 +14,8 @@ object AbBuild extends Build {
     "org.scodec" %% "scodec-bits" % "1.0.5",
     "org.scodec" %% "scodec-core" % "1.7.0",
     "org.tpolecat" %% "atto-core"  % "0.4.1", 
+    "org.http4s" %% "http4s-blazeserver" % "0.6.1",
+    "org.http4s" %% "http4s-dsl"         % "0.6.1",
     "org.specs2" %% "specs2" % "2.4.15" % "test",
     "org.scalacheck" %% "scalacheck" % "1.12.2" % "test"
   )
