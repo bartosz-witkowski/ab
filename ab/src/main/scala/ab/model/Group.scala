@@ -95,4 +95,12 @@ object Groups {
 
     new Groups(xs.reverse.toVector)
   }
+
+  import scalaz.concurrent.Task
+
+  def fromResource(resourceName: String): Task[ValidationNel[Parsing.Error, Groups]] = Task {
+    val is = getClass.getResourceAsStream(resourceName)
+    val string = scala.io.Source.fromInputStream(is).mkString
+    Parsing.parseGroups(string)
+  }
 }
